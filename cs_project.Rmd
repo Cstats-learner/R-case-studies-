@@ -1,0 +1,254 @@
+---
+title: "Cs_project"
+author: "Anderson"
+date: "September 22, 2021"
+output: html_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+
+```{r}
+#importing the data
+library(datasets)
+names(iris) = c("sepal.length", "sepal.width", "petal.length", "petal.width", "type")
+head(iris)
+```
+
+## Including Plots
+
+You can also embed plots, for example:
+
+```{r pressure, echo=FALSE}
+#Categorical data analysis
+
+table(iris$type)
+
+table(iris$type) / length(iris$type)
+
+```
+
+Note that the `echo = FALSE` parameter was added to the code chunk to prevent printing of the R code that generated the plot.
+```{r pressure, echo=FALSE}
+barplot(table(iris$type), 
+  col = "cyan", ylim=c(0,50),
+  xlab = "Type", ylab = "Frequency")
+  
+barplot(table(iris$type), 
+  col = "cyan", ylim=c(8,12),
+  xlab = "Type", ylab = "Frequency", xpd=FALSE)
+
+  
+barplot(table(iris$type), horiz = TRUE,
+  col = "cyan", xlim=c(0,12), las=2,
+  xlab = "Frequency")
+```
+
+```{r pressure, echo=FALSE}
+pie(table(iris$type), 
+  col=hcl(c(0, 60, 120)))
+  
+data <- table(iris$type)
+slice.labels <- names(data)
+slice.percents <- round(data/sum(data)*100)
+slice.labels <- paste(slice.labels, slice.percents)
+slice.labels <- paste(slice.labels, "%", sep="")
+
+pie(data, labels = slice.labels, 
+  col=hcl(c(0, 60, 120)))
+```
+
+```{r pressure, echo=FALSE}
+#numerical data analysis 
+
+mean(iris$sepal.length)
+mean(iris$sepal.width)
+mean(iris$petal.length)
+mean(iris$petal.width)
+mean(iris$sepal.length, trim=0.1)
+
+
+median(iris$sepal.length)
+median(iris$sepal.width)
+median(iris$petal.length)
+median(iris$petal.width)
+
+table(iris$sepal.length)
+which(table(iris$sepal.length) == max(table(iris$sepal.length)))
+
+range(iris$sepal.length)
+range(iris$sepal.width)
+range(iris$petal.length)
+range(iris$petal.width)
+
+diff(range(iris$sepal.length))
+diff(range(iris$sepal.width))
+diff(range(iris$petal.length))
+diff(range(iris$petal.width))
+
+var(iris$sepal.length)
+var(iris$sepal.width)
+var(iris$petal.length)
+var(iris$petal.width)
+
+sd(iris$sepal.length)
+sd(iris$sepal.width)
+sd(iris$petal.length)
+sd(iris$petal.width)
+
+summary(iris$sepal.length)
+summary(iris$sepal.width)
+summary((iris$petal.length))
+summary(iris$petal.width)
+
+quantile(iris$sepal.length, c(0, 0.25, 0.5, 0.75, 1))
+quantile(iris$sepal.width, c(0, 0.25, 0.5, 0.75, 1))
+quantile(iris$petal.length, c(0, 0.25, 0.5, 0.75, 1))
+quantile(iris$petal.width, c(0, 0.25, 0.5, 0.75, 1))
+
+
+IQR(iris$sepal.length)
+IQR(iris$sepal.width)
+IQR(iris$petal.length)
+IQR(iris$petal.width)
+
+s1<-scale(iris$sepal.length)
+s2<-scale(iris$sepal.width)
+s3<-scale(iris$petal.length)
+s4<-scale(iris$petal.width)
+
+
+attach(iris)
+
+barplot(sepal.length, 
+  xlab="Frequency", ylab = "sepal.length",
+  col = "cyan", las=2)
+
+plot(sepal.length)
+
+table(sepal.length)
+
+barplot(table(sepal.length), 
+  col = "cyan", ylim=c(0,6),
+  xlab = "sepal.length", ylab = "frequency")
+
+hist(sepal.length,col=hcl(11))
+boxplot(sepal.length,col=hcl(6))
+
+boxplot(sepal.length, horizontal = TRUE, xaxt = "n")
+axis(side = 1, at = fivenum(sepal.length), labels = TRUE)
+text(fivenum(sepal.length), rep(1.2,5), srt=90, adj=0,
+  labels=c("Min","Lower Hinge", "Median",
+           "Upper Hinge", "Max"))
+
+
+```
+
+```{r pressure, echo=FALSE}
+#### Bivariate Analysis and multivariate analysis
+
+library(UsingR)
+
+#### Two-way tables - Unsummarized data
+y<-table(type,sepal.length)
+margin.table(y)
+
+
+mosaicplot(table(type), color="cyan")
+
+plot(sepal.length,sepal.width)
+pairs(iris[,1:4], pch = 19)
+
+
+
+setosa <- subset(iris, type == 'setosa')
+virginica<- subset(iris, type == 'virginica')
+versicolor<- subset(iris, type == 'versicolor')
+
+
+par(mfrow=c(3,1))
+
+plot(setosa$sepal.length, setosa$sepal.width, ylim=c(0,25))
+
+plot(virginica$sepal.length, virginica$sepal.width, ylim=c(0,25))
+
+plot(versicolor$sepal.length, versicolor$sepal.width, ylim=c(0,25))
+
+# Sampling
+x30 <- c()
+ x100 <- c()
+ x1000 <- c()
+ k =10000
+ for ( i in 1:k){
+ x30[i] = mean(sample(sepal.length,30, replace = TRUE))
+ x100[i] = mean(sample(sepal.length,100, replace = TRUE))
+ x1000[i] = mean(sample(sepal.length,1000, replace = TRUE))
+ }
+ par(mfrow=c(1,3))
+ hist(x30, col ="green",main="n=30",xlab ="sepal.length")
+ abline(v = mean(x30), col = "blue")
+
+ hist(x100, col ="light blue", main="n=100",xlab ="sepal.length")
+ abline(v = mean(x100), col = "red")
+
+ hist(x1000, col ="orange",main="n=1000",xlab ="sepal.length")
+ abline(v = mean(x1000), col = "red")
+ 
+ #Show how various sampling methods can be used on your data. What are your 
+#conclusions if these samples are used instead of the whole dataset. 
+#
+a<- mean(iris$Sepal.Length)
+ #random sampling
+#1.
+ iris.sampled<-iris[sample(1:nrow(iris),30, replace=TRUE),]
+ sepal_length_mean_wr<-mean(iris.sampled$Sepal.Length)
+
+ #2.
+index <- sample(nrow(iris), replace=FALSE, prob=NULL)#without replacement
+iris[index, ]
+ #other way
+library(sampling)
+m <- 50
+M <- nrow(iris)
+set.seed(1234)
+srsworep <- srswor(m, M)
+head(iris[(srsworep != 0), ], 10)
+sepal_length_mean_srswor <- mean(iris$Sepal.Length[srsworep != 0], na.rm=TRUE)
+#3.stratified sampling
+library(dplyr)
+set.seed(1)
+sample_iris <- iris %>%
+  group_by(type) %>%
+  sample_n(10)
+ #or
+library(sampling)  
+stratas = strata(iris, c("Species"),size = c(3,3,3), method = "srswor")
+stratas
+st_sample <- getdata(iris, stratas)
+sepal_length_mean_strata <- mean(st_sample$Sepal.Length, na.rm=TRUE) 
+
+#systematic sampling with equal probability
+k <- M/m
+k <- ceiling(k)
+
+set.seed(1234)
+d <- sample(k, 1)
+systematic <- seq(d, by=k, length.out=m)
+head(iris[systematic, ], 10)
+sepal_length_mean_sys.eqp <- mean(iris$Sepal.Length[systematic], na.rm=TRUE) 
+
+#systematic sampling with unequal prob
+set.seed(1234)
+iprob <- inclusionprobabilities(iris$Sepal.Length, m)
+upsystematic <- UPsystematic(iprob)
+head(iris[(upsystematic != 0), ], 10)
+sepal_length_mean_sys.uneqp<- mean(iris$Sepal.Length[upsystematic != 0], na.rm=TRUE)
+
+#
+sepal_len_mean<-c(a,sepal_length_mean_wr,sepal_length_mean_srswor,sepal_length_mean_strata,sepal_length_mean_sys.eqp,sepal_length_mean_sys.uneqp)
+names(sepal_len_mean) <- c("population avg sepal length", "wr_mean_Sepal_length", "srswor_mean_Sepal_length", "stratified_mean_Sepal_length","Systematic_mean_Sepal_length",
+                             "UPSystematic_mean_Sepal_length")
+ sepal_len_mean
+```
