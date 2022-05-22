@@ -1,0 +1,58 @@
+---
+title: "Linear Homework # 2"
+output: html_notebook
+---
+
+This is an [R Markdown](http://rmarkdown.rstudio.com) Notebook. When you execute code within the notebook, the results appear beneath the code. 
+
+Try executing this chunk by clicking the *Run* button within the chunk or by placing your cursor inside it and pressing *Ctrl+Shift+Enter*. 
+
+```{r}
+#Load data
+ 
+library(readxl)
+datafilename <- "C:/Users/eddob/AppData/Roaming/Microsoft/Windows/Network Shortcuts/apparel retailer transaction data.xlsx"
+```
+
+
+```{r}
+#print out the data file name
+datafilename
+
+#load data
+library(readxl)
+library(dplyr)
+
+
+#open and set the variable apparel_retailer_transaction_data to hold the data from the file. 
+apparel_retailer_transaction_data <- read_excel(datafilename,sheet = "apparel retailer transaction da")
+```
+
+Add a new chunk by clicking the *Insert Chunk* button on the toolbar or by pressing *Ctrl+Alt+I*.
+```{r}
+#1. Please compare the sales by gender, women, men, girls, and boys (question proposed by Nicol). After the one-way ANOVA, please also carry out pair-wise comparison.
+
+#fit the one-way ANOVA model
+model <- aov(PROD_SELL_PRC ~ PRODUCT_GENDER, data = df)
+#view model output
+summary(model)
+
+boys=df$PROD_SELL_PRC[df$PRODUCT_GENDER=="BOYS"]
+girls=df$PROD_SELL_PRC[df$PRODUCT_GENDER=="GIRLS"]
+kids=df$PROD_SELL_PRC[df$PRODUCT_GENDER=="KIDS"]
+mens=df$PROD_SELL_PRC[df$PRODUCT_GENDER=="MENS"]
+toddlers=df$PROD_SELL_PRC[df$PRODUCT_GENDER=="TODDLERS"]
+unisex=df$PROD_SELL_PRC[df$PRODUCT_GENDER=="UNISEX"]
+womens=df$PROD_SELL_PRC[df$PRODUCT_GENDER=="WOMENS"]
+
+genders = group_by(df, PRODUCT_GENDER)
+summarise(genders, mean = mean(PROD_SELL_PRC))
+
+# Perform pairwise t-tests with Bonferroni’s correction
+pairwise.t.test(df$PROD_SELL_PRC, df$PRODUCT_GENDER, p.adjust.method="bonferroni")
+
+```
+
+When you save the notebook, an HTML file containing the code and output will be saved alongside it (click the *Preview* button or press *Ctrl+Shift+K* to preview the HTML file).
+
+The preview shows you a rendered HTML copy of the contents of the editor. Consequently, unlike *Knit*, *Preview* does not run any R code chunks. Instead, the output of the chunk when it was last run in the editor is displayed.
